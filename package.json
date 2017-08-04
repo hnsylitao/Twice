@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://hnsylitao@github.com/hnsylitao/Twice.git"
+    "url": "git+https://hnsylitao@github.com/hnsylitao/twice.git"
   },
   "keywords": [
     "webpack",
@@ -18,9 +18,9 @@
   "author": "hnsylitao",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/hnsylitao/Twice/issues"
+    "url": "https://github.com/hnsylitao/twice/issues"
   },
-  "homepage": "https://github.com/hnsylitao/Twice#readme",
+  "homepage": "https://github.com/hnsylitao/twice#readme",
   "dependencies": {
     "babel-core": "^6.25.0",
     "babel-eslint": "^7.2.3",
