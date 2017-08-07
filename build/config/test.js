@@ -1,24 +1,22 @@
 const path = require('path')
   , webpack = require('webpack')
   , {config:baseConfig, webpackConfig:baseWebpackConfig} = require('./base')
-  , devServerConfig = require('./dev.server')
   , HtmlWebpackPlugin = require('html-webpack-plugin')
   , ExtractTextPlugin = require('extract-text-webpack-plugin')
   , _ = require('lodash');
 
 module.exports = _.merge({}, baseWebpackConfig, {
   output: {
-    path: path.resolve(baseConfig.rootPath, '__build__'),
-    filename: 'assets/js/[name].js',
+    path: baseConfig.buildPath,
+    filename: 'assets/js/[name].[chunkhash].js',
     publicPath: '',
-    chunkFilename: 'assets/js/[id].chunk.js'
+    chunkFilename: 'assets/js/[id].[chunkhash].chunk.js'
   },
-  devServer: devServerConfig,
-  cache: true,
+  cache: false,
   devtool: 'cheap-source-map',
   plugins: [
     new webpack.LoaderOptionsPlugin({
-      debug: true,
+      debug: false,
     }),
     new HtmlWebpackPlugin({
       filename: 'index.html',
@@ -42,8 +40,12 @@ module.exports = _.merge({}, baseWebpackConfig, {
     new webpack.ProvidePlugin({
       'Promise': 'imports-loader?this=>global!exports-loader?global.Promise!es6-promise'
     }),
+    new webpack.optimize.UglifyJsPlugin({
+      comments: false,
+      sourceMap: true,
+    }),
     new webpack.optimize.OccurrenceOrderPlugin(),
-    new webpack.HotModuleReplacementPlugin(),
+    new webpack.optimize.AggressiveMergingPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
     new webpack.optimize.MinChunkSizePlugin({minChunkSize: 10000}),
     new ExtractTextPlugin({
@@ -55,21 +57,13 @@ module.exports = _.merge({}, baseWebpackConfig, {
   module: _.merge({}, baseWebpackConfig.module, {
     rules: baseWebpackConfig.module.rules.concat([
       {
-        test: /\.(js|jsx)$/,
-        use: [
-          {
-            loader: 'react-hot-loader',
-          },
-          {
-            loader: 'babel-loader',
-          }
-        ],
-        include: baseConfig.srcPath,
-      },
-      {
         test: /\.(png|jpe?g|gif)$/,
         use: [{
           loader: 'url-loader',
+          options: {
+            name: `assets/image/[name].[hash].[ext]`,
+            limit: 8192
+          },
         }]
       },
       {
@@ -77,8 +71,9 @@ module.exports = _.merge({}, baseWebpackConfig, {
         use: [{
           loader: 'url-loader',
           options: {
-            limit: 10000000,
-            mimetype: 'image/svg+xml',
+            name: `assets/image/[name].[hash].[ext]`,
+            limit: 8192,
+            mimetype: 'image/svg+xml'
           }
         }]
       },
@@ -87,7 +82,7 @@ module.exports = _.merge({}, baseWebpackConfig, {
         use: [{
           loader: 'url-loader',
           options: {
-            limit: 10000000,
+            limit: 8192,
             mimetype: 'application/font-woff',
           }
         }]
@@ -97,7 +92,7 @@ module.exports = _.merge({}, baseWebpackConfig, {
         use: [{
           loader: 'url-loader',
           options: {
-            limit: 10000000,
+            limit: 8192,
             mimetype: 'application/font-woff2',
           }
         }]
@@ -107,7 +102,7 @@ module.exports = _.merge({}, baseWebpackConfig, {
         use: [{
           loader: 'url-loader',
           options: {
-            limit: 10000000,
+            limit: 8192,
             mimetype: 'application/octet-stream',
           }
         }]
@@ -117,7 +112,7 @@ module.exports = _.merge({}, baseWebpackConfig, {
         use: [{
           loader: 'url-loader',
           options: {
-            limit: 10000000,
+            limit: 8192,
             mimetype: 'application/vnd.ms-fontobject',
           }
         }]

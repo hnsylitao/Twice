@@ -1,7 +1,8 @@
 const path = require('path')
   , {config:baseConfig, webpackConfig:baseWebpackConfig} = require('./config/base')
-  , webpackConfig = require('./config/dev')
+  , webpackConfig = require(`./config/dev`)
   , webpack = require('webpack')
+  , open = require('open')
   , webpackDevServer = require('webpack-dev-server')
   , _ = require('lodash');
 
@@ -12,4 +13,5 @@ app.listen(webpackConfig.devServer.port, '0.0.0.0', (err) => {
     return console.error(err)
   }
   console.log('Listening at localhost:' + webpackConfig.devServer.port)
+  open(`http://localhost:${webpackConfig.devServer.port}`);
 });

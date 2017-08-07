@@ -7,15 +7,21 @@ const path = require('path')
   , ExtractTextPlugin = require('extract-text-webpack-plugin')
   , package = require(path.join(rootPath, 'package.json'));
 
-
-const env = process.env.REACT_WEBPACK_ENV = args.env || 'dev';
+/**
+ * env 开发环境
+ * test 测试环境
+ * prod 线上环境
+ * @type {*}
+ */
+const env = process.env.REACT_WEBPACK_ENV = process.env.NODE_ENV = (args.env || process.env.NODE_ENV || 'dev');
 
 const config = {
   env: env,
+  version: package.version,
   rootPath: rootPath,
   srcPath: srcPath,
   modulesPath: modulesPath,
-  version: package.version,
+  buildPath: path.resolve(rootPath, 'build', 'public', `${package.version}${env != 'dist' && `-${env}`}`),
 };
 
 const webpackConfig = {
@@ -25,6 +31,8 @@ const webpackConfig = {
   resolve: {
     alias: {
       Assets: `${srcPath}/assets`,
+      Config: `${srcPath}/config/${env}`,
+      Const: `${srcPath}/const`,
       Components: `${srcPath}/components`,
       Redux: `${srcPath}/redux`,
       Routes: `${srcPath}/routes`,
