@@ -28,3 +28,14 @@ $ npm run build-test
 // build prod
 $ npm run build-prod
 ```
+
+
+# 项目技术栈
+`WebPack` `Es6` `ESlint` `HotMiddleWare` `ReactJs`
+`Antd` `React-router` `Redux` `CssModules` 
+
+### 项目亮点
+1. 采用热替换 及 Dll 打包方式 开发环境中可以更高速的打包
+2. 实现发布版本管控 做到每打包一个版本都有备份
+3. Code Splitting 按需加载
+4. Src 目录下的 less 采用cssModule 并且在 test、prod 打包下 emjoy命名
