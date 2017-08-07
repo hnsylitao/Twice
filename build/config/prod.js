@@ -5,7 +5,7 @@ const path = require('path')
   , ExtractTextPlugin = require('extract-text-webpack-plugin')
   , _ = require('lodash');
 
-module.exports = _.merge({}, baseWebpackConfig, {
+module.exports = _.assign({}, baseWebpackConfig, {
   output: {
     path: baseConfig.buildPath,
     filename: 'assets/js/[name].[chunkhash].js',
@@ -33,8 +33,9 @@ module.exports = _.merge({}, baseWebpackConfig, {
       filename: `assets/js/common.[chunkhash].js`
     }),
     new webpack.DefinePlugin({
-      __ENV: JSON.stringify(baseConfig.env),
-      __VERSION: JSON.stringify(baseConfig.version),
+      '__ENV': JSON.stringify(baseConfig.env),
+      '__VERSION': JSON.stringify(baseConfig.version),
+      'process.env.NODE_ENV': JSON.stringify('production'),
     }),
     new webpack.ProvidePlugin({
       'Promise': 'imports-loader?this=>global!exports-loader?global.Promise!es6-promise'
@@ -52,7 +53,7 @@ module.exports = _.merge({}, baseWebpackConfig, {
       allChunks: true,
     })
   ],
-  module: _.merge({}, baseWebpackConfig.module, {
+  module: _.assign({}, baseWebpackConfig.module, {
     rules: baseWebpackConfig.module.rules.concat([
       {
         test: /\.less$/,

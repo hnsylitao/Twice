@@ -1,20 +1,17 @@
 const path = require('path')
   , webpack = require('webpack')
   , {config:baseConfig, webpackConfig:baseWebpackConfig} = require('./base')
-  , HtmlWebpackPlugin = require('html-webpack-plugin')
   , ExtractTextPlugin = require('extract-text-webpack-plugin')
-  , HtmlWebpackStatic = require('../plugins/HtmlWebpackStatic')
   , _ = require('lodash');
 
 module.exports = _.assign({}, baseWebpackConfig, {
-  entry: _.merge({}, baseWebpackConfig.entry, {
-    main: path.resolve(baseConfig.modulesPath, 'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000')
-  }),
+  entry: {
+    "base": [path.resolve(baseConfig.rootPath, 'build', 'dll', 'base.config.js')]
+  },
   output: {
-    path: baseConfig.buildPath,
-    filename: 'assets/js/[name].js',
-    publicPath: '',
-    chunkFilename: 'assets/js/[id].chunk.js'
+    path: path.resolve(baseConfig.srcPath, 'dll'),
+    filename: '[name].js',
+    library: '[name]_library',
   },
   cache: true,
   devtool: 'cheap-source-map',
@@ -22,44 +19,24 @@ module.exports = _.assign({}, baseWebpackConfig, {
     new webpack.LoaderOptionsPlugin({
       debug: true,
     }),
-    new webpack.DllReferencePlugin({
-      manifest: require(path.resolve(baseConfig.rootPath, 'build', 'dll', 'manifest.json')),
-      context: path.resolve(path.resolve(baseConfig.rootPath)),
-    }),
-    new HtmlWebpackStatic({
-      js: ['dll/base.js'],
-    }),
-    new HtmlWebpackPlugin({
-      filename: 'index.html',
-      allChunks: true,
-      template: path.resolve(baseConfig.srcPath, 'index.html'),
-      minify: {
-        minifyJS: false,
-        minifyCSS: false,
-        removeComments: false,
-        collapseWhitespace: false
-      }
-    }),
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'common',
-      filename: `assets/js/common.js`
-    }),
     new webpack.DefinePlugin({
-      '__ENV': JSON.stringify(baseConfig.env),
-      '__VERSION': JSON.stringify(baseConfig.version),
-      'process.env.NODE_ENV': JSON.stringify('development'),
+      __ENV: JSON.stringify(baseConfig.env),
+      __VERSION: JSON.stringify(baseConfig.version),
     }),
     new webpack.ProvidePlugin({
       'Promise': 'imports-loader?this=>global!exports-loader?global.Promise!es6-promise'
     }),
     new webpack.optimize.OccurrenceOrderPlugin(),
-    new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
-    new webpack.optimize.MinChunkSizePlugin({minChunkSize: 10000}),
+    new webpack.DllPlugin({
+      path: path.resolve(baseConfig.rootPath, 'build', 'dll', 'manifest.json'),
+      name: '[name]_library',
+      context: path.resolve(baseConfig.rootPath),
+    }),
     new ExtractTextPlugin({
-      filename: 'assets/css/[name].css',
+      filename: '[name].css',
       disable: false,
-      allChunks: true,
+      allChunks: false,
     })
   ],
   module: _.assign({}, baseWebpackConfig.module, {

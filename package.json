@@ -4,7 +4,8 @@
   "description": "twice is react project",
   "main": "index.js",
   "scripts": {
-    "start": "node build/dev.js --env=dev",
+    "start": "npm run dll && node build/dev.js --env=dev",
+    "dll": "webpack --config build/config/dll.js --env=dev",
     "test": "node build/dev.js --env=test",
     "prod": "node build/dev.js --env=prod",
     "build-dev": "node build/build.js --env=dev",
@@ -33,6 +34,7 @@
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
+    "cheerio": "^1.0.0-rc.2",
     "css-loader": "^0.28.4",
     "es6-promise": "^4.1.1",
     "eslint": "^4.3.0",

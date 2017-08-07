@@ -4,6 +4,7 @@ const path = require('path')
   , devServerConfig = require('./config/dev.server')
   , webpack = require('webpack')
   , open = require('open')
+  , url = require('url')
   , webpackDevServer = require('webpack-dev-server')
   , webpackDevMiddleWare = require('webpack-dev-middleware')
   , webpackHotMiddleWare = require('webpack-hot-middleware')
@@ -15,6 +16,13 @@ app.use(webpackHotMiddleWare(compiler, {
   path: "/__webpack_hmr",
   heartbeat: 5000
 }));
+app.use((req, res, next) => {
+  if (req.url.indexOf('/dll') === 0) {
+    return res.sendFile(path.resolve(baseConfig.srcPath, url.parse(req.url).pathname))
+  } else {
+    next();
+  }
+});
 app.use(webpackDevMiddleWare(compiler, {
   noInfo: true,
   stats: {colors: true},

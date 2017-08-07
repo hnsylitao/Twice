@@ -34,3 +34,7 @@ build/public
 
 #npm debug
 npm-debug.log.*
+
+#dll
+src/dll
+build/dll/manifest.json
