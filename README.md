@@ -1,11 +1,11 @@
-#Twice `React Project`
+# Twice `React Project`
 
-##FullStack
+# FullStack
 + `webpack babel eslint`
 + `react react-router react-redux`
 + `andt`
 
-## Scripts
+# Scripts
 **install**
 ```js
 $ npm install
