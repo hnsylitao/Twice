@@ -4,12 +4,12 @@
 import styles from './app.less';
 import Config from 'Config';
 import React from 'react';
-import {Button} from 'antd';
 import ReactDOM from 'react-dom';
+import App from 'Views/app';
 
 ReactDOM.render(
   <div className={styles.wrapper}>
-    <Button>{JSON.stringify(Config)}</Button>
+    <App>{JSON.stringify(Config)}</App>
   </div>,
   document.getElementById('app')
 );
