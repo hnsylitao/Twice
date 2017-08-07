@@ -33,8 +33,8 @@ module.exports = _.merge({}, baseWebpackConfig, {
       filename: `assets/js/common.[chunkhash].js`
     }),
     new webpack.DefinePlugin({
-      __ENV: baseConfig.env,
-      __VERSION: baseConfig.version,
+      __ENV: JSON.stringify(baseConfig.env),
+      __VERSION: JSON.stringify(baseConfig.version),
     }),
     new webpack.ProvidePlugin({
       'Promise': 'imports-loader?this=>global!exports-loader?global.Promise!es6-promise'
@@ -54,6 +54,22 @@ module.exports = _.merge({}, baseWebpackConfig, {
   ],
   module: _.merge({}, baseWebpackConfig.module, {
     rules: baseWebpackConfig.module.rules.concat([
+      {
+        test: /\.less$/,
+        include: [baseConfig.modulesPath],
+        use: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: 'css-loader!less-loader',
+        })
+      },
+      {
+        test: /\.less$/,
+        include: [baseConfig.srcPath],
+        use: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: 'css-loader?modules&localIdentName=[emoji:4][hash:base64:4]!less-loader',
+        })
+      },
       {
         test: /\.(png|jpe?g|gif)$/,
         use: [{

@@ -1,19 +1,20 @@
 const path = require('path')
   , webpack = require('webpack')
   , {config:baseConfig, webpackConfig:baseWebpackConfig} = require('./base')
-  , devServerConfig = require('./dev.server')
   , HtmlWebpackPlugin = require('html-webpack-plugin')
   , ExtractTextPlugin = require('extract-text-webpack-plugin')
   , _ = require('lodash');
 
 module.exports = _.merge({}, baseWebpackConfig, {
+  entry: _.merge({}, baseWebpackConfig.entry, {
+    main: path.resolve(baseConfig.modulesPath, 'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000')
+  }),
   output: {
-    path: path.resolve(baseConfig.rootPath, '__build__'),
+    path: baseConfig.buildPath,
     filename: 'assets/js/[name].js',
     publicPath: '',
     chunkFilename: 'assets/js/[id].chunk.js'
   },
-  devServer: devServerConfig,
   cache: true,
   devtool: 'cheap-source-map',
   plugins: [
@@ -33,11 +34,11 @@ module.exports = _.merge({}, baseWebpackConfig, {
     }),
     new webpack.optimize.CommonsChunkPlugin({
       name: 'common',
-      filename: `assets/js/common.[chunkhash].js`
+      filename: `assets/js/common.js`
     }),
     new webpack.DefinePlugin({
-      __ENV: baseConfig.env,
-      __VERSION: baseConfig.version,
+      __ENV: JSON.stringify(baseConfig.env),
+      __VERSION: JSON.stringify(baseConfig.version),
     }),
     new webpack.ProvidePlugin({
       'Promise': 'imports-loader?this=>global!exports-loader?global.Promise!es6-promise'
@@ -54,6 +55,22 @@ module.exports = _.merge({}, baseWebpackConfig, {
   ],
   module: _.merge({}, baseWebpackConfig.module, {
     rules: baseWebpackConfig.module.rules.concat([
+      {
+        test: /\.less$/,
+        include: [baseConfig.modulesPath],
+        use: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: 'css-loader!less-loader',
+        })
+      },
+      {
+        test: /\.less$/,
+        include: [baseConfig.srcPath],
+        use: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: 'css-loader?modules&localIdentName=[name]--[local]--[hash:base64:8]!less-loader',
+        })
+      },
       {
         test: /\.(js|jsx)$/,
         use: [

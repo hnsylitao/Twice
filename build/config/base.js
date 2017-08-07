@@ -30,6 +30,7 @@ const webpackConfig = {
   },
   resolve: {
     alias: {
+      Src: `${srcPath}`,
       Assets: `${srcPath}/assets`,
       Config: `${srcPath}/config/${env}`,
       Const: `${srcPath}/const`,
@@ -67,14 +68,7 @@ const webpackConfig = {
           fallback: 'style-loader',
           use: 'css-loader',
         })
-      },
-      {
-        test: /\.less$/,
-        use: ExtractTextPlugin.extract({
-          fallback: 'style-loader',
-          use: 'css-loader!less-loader',
-        })
-      },
+      }
     ],
   }
 };

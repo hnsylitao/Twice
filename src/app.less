@@ -1,0 +1,23 @@
+/**
+  :global{//global 之下的不启用cssmodule}
+  :global(.app){} .app不启用 cssmodule
+
+  启用cssModule 资源路径 不需要加 ～ 开头
+ */
+
+:global {
+  #app {
+    width: 1200px;
+    margin: 0 auto;
+  }
+}
+
+.wrapper {
+  width: 1000px;
+  min-height: 600px;
+  display: flex;
+  background: #ececec;
+  margin: 0 auto;
+  justify-content: center;
+  align-items: center;
+}
