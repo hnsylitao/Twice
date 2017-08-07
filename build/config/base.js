@@ -21,7 +21,7 @@ const config = {
   rootPath: rootPath,
   srcPath: srcPath,
   modulesPath: modulesPath,
-  buildPath: path.resolve(rootPath, 'build', 'public', `${package.version}${env != 'dist' && `-${env}`}`),
+  buildPath: path.resolve(rootPath, 'build', 'public', `${package.version}${env != 'prod' && `-${env}`}`),
 };
 
 const webpackConfig = {
