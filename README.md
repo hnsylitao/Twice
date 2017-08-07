@@ -29,6 +29,51 @@ $ npm run build-test
 $ npm run build-prod
 ```
 
+# 项目结构
+
+```
+.
+├── .babelrc
+├── .eslintrc
+├── .gitignore
+├── README.md
+├── build
+│   ├── build.js
+│   ├── config
+│   │   ├── base.js
+│   │   ├── dev.js
+│   │   ├── dev.server.js
+│   │   ├── dll.js
+│   │   ├── prod.js
+│   │   └── test.js
+│   ├── dev.js
+│   ├── dll
+│   │   └── base.config.js
+│   ├── plugins
+│   │   └── HtmlWebpackStatic.js
+│   └── public
+├── package.json
+└── src
+    ├── app.js
+    ├── app.less
+    ├── assets
+    ├── components
+    ├── config
+    │   ├── base.js
+    │   ├── dev.js
+    │   ├── prod.js
+    │   └── test.js
+    ├── const
+    ├── dll
+    ├── index.html
+    ├── redux
+    ├── routes
+    ├── services
+    └── util
+
+15 directories, 22 files
+```
+
 
 # 项目技术栈
 `WebPack` `Es6` `ESlint` `HotMiddleWare` `ReactJs`

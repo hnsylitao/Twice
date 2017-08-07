@@ -4,12 +4,14 @@
 import styles from './app.less';
 import Config from 'Config';
 import React from 'react';
+import {Button} from 'antd';
 import ReactDOM from 'react-dom';
-import App from 'Views/app';
 
 ReactDOM.render(
   <div className={styles.wrapper}>
-    <App>{JSON.stringify(Config)}</App>
+    <h1>Twice 当前Config</h1>
+    <h2>{JSON.stringify(Config)}</h2>
+    <Button>Twice</Button>
   </div>,
   document.getElementById('app')
 );
